@@ -1,0 +1,904 @@
+{
+  "groups": [
+    {
+      "id": "solidarity-women",
+      "name": "Tontine Solidarity Women",
+      "description": "Weekly savings and emergency loans",
+      "pinHash": "990f5696827dbc11aa36b566c48ac635:3bc9c143952663f745a9b460d4cfc25a43cbda46bc0ee770e3f465f7060ecaba",
+      "adminPinHash": "893a122e24c255fe3ff793ffa4394a99:59387e0703d5dc8ba7e8cada6cf169de3329df76d97c9522cd5fe4800fa24559",
+      "rolePins": {
+        "treasurer": "ffe10a039e672ba0f23c731f2c91a1fc:89747913d88e44724b934aaac5a37a18e7898d47fd71ceeb0f847cd1f2fadfa6",
+        "secretary": "33b0602150261f9b2f137fc3c6c7a690:18a080c953f17f6c101cfd1a5e037493640d26ba82fecdc5859f62c3d41c3e8b"
+      },
+      "currency": "XAF",
+      "contributionAmount": 10000,
+      "lateFeeAmount": 1000,
+      "paymentDeadlineDay": "Saturday",
+      "nextPaymentDue": "2026-06-27",
+      "nextMeetingAt": "2026-06-27T17:00:00.000Z",
+      "createdAt": "2026-06-23T20:29:55.932Z",
+      "members": [
+        {
+          "id": "m1",
+          "name": "Amina N.",
+          "phone": "+237670000001",
+          "identityId": "CNI-001-2026",
+          "role": "treasurer",
+          "kycStatus": "pending",
+          "verifiedAt": null
+        },
+        {
+          "id": "m2",
+          "name": "Brenda F.",
+          "phone": "+237670000002",
+          "identityId": "CNI-002-2026",
+          "role": "member",
+          "kycStatus": "pending",
+          "verifiedAt": null
+        },
+        {
+          "id": "m3",
+          "name": "Grace M.",
+          "phone": "+237670000003",
+          "identityId": "CNI-003-2026",
+          "role": "member",
+          "kycStatus": "pending",
+          "verifiedAt": null
+        }
+      ],
+      "transactions": [
+        {
+          "id": "_DAZcIclCc",
+          "memberId": "m1",
+          "memberName": "Amina N.",
+          "amount": 10000,
+          "provider": "momo",
+          "phone": "+237670000001",
+          "status": "reconciled",
+          "createdAt": "2026-06-23T20:29:56.689Z",
+          "reconciledAt": "2026-06-23T20:29:56.699Z"
+        }
+      ],
+      "loans": [],
+      "receipts": [
+        {
+          "id": "RCT-2026-YEUKJYFW",
+          "paymentId": "_DAZcIclCc",
+          "memberName": "Amina N.",
+          "amount": 10000,
+          "provider": "momo",
+          "issuedAt": "2026-06-23T20:29:56.689Z",
+          "groupName": "Tontine Solidarity Women",
+          "proofCode": "83328DD54BF0"
+        }
+      ],
+      "reminders": [
+        {
+          "id": "zciWp2bG",
+          "memberId": "m3",
+          "phone": "+237670000003",
+          "channel": "sms",
+          "type": "predictive-24h",
+          "status": "queued",
+          "dueDate": "2026-06-27",
+          "message": "Reminder: Tontine Solidarity Women payment of 10000 XAF is due on 2026-06-27.",
+          "daysLeft": -11,
+          "createdAt": "2026-07-08T18:25:43.693Z"
+        },
+        {
+          "id": "zlI9hawI",
+          "memberId": "m2",
+          "phone": "+237670000002",
+          "channel": "sms",
+          "type": "predictive-24h",
+          "status": "queued",
+          "dueDate": "2026-06-27",
+          "message": "Reminder: Tontine Solidarity Women payment of 10000 XAF is due on 2026-06-27.",
+          "daysLeft": -11,
+          "createdAt": "2026-07-08T18:25:43.693Z"
+        },
+        {
+          "id": "mujtNgEb",
+          "memberId": "m1",
+          "phone": "+237670000001",
+          "channel": "sms",
+          "type": "predictive-24h",
+          "status": "queued",
+          "dueDate": "2026-06-27",
+          "message": "Reminder: Tontine Solidarity Women payment of 10000 XAF is due on 2026-06-27.",
+          "daysLeft": -11,
+          "createdAt": "2026-07-08T18:25:43.692Z"
+        }
+      ],
+      "notifications": [
+        {
+          "id": "ACgU8pDx",
+          "memberId": "m3",
+          "phone": "+237670000003",
+          "channel": "whatsapp",
+          "provider": "whatsapp-business-api",
+          "status": "queued",
+          "receiptId": null,
+          "message": "24h reminder: Tontine Solidarity Women meeting/payment is due on 2026-06-27.",
+          "createdAt": "2026-07-08T18:25:43.693Z"
+        },
+        {
+          "id": "Rjuxhc1x",
+          "memberId": "m2",
+          "phone": "+237670000002",
+          "channel": "whatsapp",
+          "provider": "whatsapp-business-api",
+          "status": "queued",
+          "receiptId": null,
+          "message": "24h reminder: Tontine Solidarity Women meeting/payment is due on 2026-06-27.",
+          "createdAt": "2026-07-08T18:25:43.693Z"
+        },
+        {
+          "id": "w0hUSHxz",
+          "memberId": "m1",
+          "phone": "+237670000001",
+          "channel": "whatsapp",
+          "provider": "whatsapp-business-api",
+          "status": "queued",
+          "receiptId": null,
+          "message": "24h reminder: Tontine Solidarity Women meeting/payment is due on 2026-06-27.",
+          "createdAt": "2026-07-08T18:25:43.692Z"
+        },
+        {
+          "id": "3AKVg_QU",
+          "memberId": "m1",
+          "phone": "+237670000001",
+          "channel": "whatsapp",
+          "provider": "whatsapp-business-api",
+          "status": "queued",
+          "receiptId": "RCT-2026-YEUKJYFW",
+          "message": "Payment reconciled: 10000 XAF. Receipt RCT-2026-YEUKJYFW.",
+          "createdAt": "2026-06-23T20:29:56.699Z"
+        },
+        {
+          "id": "3bV90w_6",
+          "memberId": "m1",
+          "phone": "+237670000001",
+          "channel": "whatsapp",
+          "provider": "whatsapp-business-api",
+          "status": "queued",
+          "receiptId": "RCT-2026-YEUKJYFW",
+          "message": "Receipt RCT-2026-YEUKJYFW: 10000 XAF received for Tontine Solidarity Women.",
+          "createdAt": "2026-06-23T20:29:56.689Z"
+        }
+      ],
+      "lateFees": [
+        {
+          "id": "kUhwa7AvaW",
+          "memberId": "m3",
+          "memberName": "Grace M.",
+          "amount": 1000,
+          "dueDate": "2026-06-27",
+          "status": "applied",
+          "createdAt": "2026-07-08T18:25:43.694Z"
+        },
+        {
+          "id": "zYBvsgg_V_",
+          "memberId": "m2",
+          "memberName": "Brenda F.",
+          "amount": 1000,
+          "dueDate": "2026-06-27",
+          "status": "applied",
+          "createdAt": "2026-07-08T18:25:43.693Z"
+        }
+      ],
+      "rules": {
+        "latePenaltyPercent": 10,
+        "lateFeeAmount": 1000,
+        "loanInterestRate": 5,
+        "maxLoanMultiplier": 3,
+        "voteApprovalThreshold": 60,
+        "rotationIntervalDays": 30
+      },
+      "paymentGateway": {
+        "name": "Unified Payment Aggregator",
+        "providers": [
+          "mtn-momo",
+          "orange-money",
+          "bank-transfer"
+        ],
+        "status": "sandbox",
+        "settlementAccount": "TONTINE-POOL-XAF"
+      },
+      "loanApplications": [
+        {
+          "id": "s0v08LSKme",
+          "memberId": "m1",
+          "memberName": "Amina N.",
+          "amount": 30000,
+          "purpose": "PERSONAL",
+          "creditScore": 740,
+          "eligibility": "eligible",
+          "status": "submitted",
+          "createdAt": "2026-07-08T20:56:17.276Z"
+        }
+      ],
+      "paymentIntents": [],
+      "rotations": [],
+      "votes": [],
+      "messages": [],
+      "minutes": [],
+      "education": [
+        {
+          "id": "edu-budget",
+          "title": "Budget before contribution day",
+          "body": "Reserve tontine money first, then plan daily spending from the remainder."
+        },
+        {
+          "id": "edu-loan",
+          "title": "Borrow only for productive needs",
+          "body": "A tontine loan is healthiest when it protects income, stock, school fees, or emergencies."
+        },
+        {
+          "id": "edu-proof",
+          "title": "Keep receipts",
+          "body": "Receipts and audit logs protect every member and make meetings faster."
+        }
+      ]
+    },
+    {
+      "id": "unity-builders",
+      "name": "Tontine Unity Builders",
+      "description": "Monthly project savings circle",
+      "pinHash": "640b9887011d8b7083d262bd060e78d9:c96336c2d251d20d5fb072f6573f525b3459688f5b3fad5fcb964348c77a842b",
+      "adminPinHash": "49966b40e67c41458582bec98433ba74:1165ee3a4cca66580b0cc5c77e8760121b22a3b509373326251ee5be22caa981",
+      "rolePins": {
+        "treasurer": "521859ad90ee07c5f404f901d50df17e:e0862eb26121fcdaee70c31843cf3fc69ea367ac150182e1899a885f8cacdf60",
+        "secretary": "333508d78cbda799a9debd774bd8ea0e:b135cd2fdefc5ab7ecbee89796d971f243231dda3342fda7e47111187913f4cd"
+      },
+      "currency": "XAF",
+      "contributionAmount": 25000,
+      "lateFeeAmount": 2000,
+      "paymentDeadlineDay": "Friday",
+      "nextPaymentDue": "2026-06-26",
+      "nextMeetingAt": "2026-06-26T17:00:00.000Z",
+      "createdAt": "2026-06-23T20:29:55.932Z",
+      "members": [
+        {
+          "id": "m4",
+          "name": "Jean T.",
+          "phone": "+237690000001",
+          "identityId": "CNI-004-2026",
+          "role": "admin",
+          "kycStatus": "verified",
+          "verifiedAt": "2026-07-08T21:06:12.168Z"
+        },
+        {
+          "id": "m5",
+          "name": "Mireille K.",
+          "phone": "+237690000002",
+          "identityId": "CNI-005-2026",
+          "role": "member",
+          "kycStatus": "verified",
+          "verifiedAt": "2026-07-08T21:06:10.139Z"
+        },
+        {
+          "id": "kHn6g4tX",
+          "name": "FOTSO",
+          "phone": "657276085",
+          "identityId": "CNI-006-2026",
+          "role": "member",
+          "kycStatus": "verified",
+          "verifiedAt": "2026-07-08T21:06:01.999Z"
+        }
+      ],
+      "transactions": [],
+      "loans": [],
+      "receipts": [],
+      "reminders": [
+        {
+          "id": "kny0hoA7",
+          "memberId": "kHn6g4tX",
+          "phone": "657276085",
+          "channel": "sms",
+          "type": "predictive-24h",
+          "status": "queued",
+          "dueDate": "2026-06-26",
+          "message": "Reminder: Tontine Unity Builders payment of 25000 XAF is due on 2026-06-26.",
+          "daysLeft": -12,
+          "createdAt": "2026-07-08T21:05:50.676Z"
+        },
+        {
+          "id": "kx1ascvf",
+          "memberId": "m5",
+          "phone": "+237690000002",
+          "channel": "sms",
+          "type": "predictive-24h",
+          "status": "queued",
+          "dueDate": "2026-06-26",
+          "message": "Reminder: Tontine Unity Builders payment of 25000 XAF is due on 2026-06-26.",
+          "daysLeft": -12,
+          "createdAt": "2026-07-08T18:25:43.694Z"
+        },
+        {
+          "id": "rqJa6fwX",
+          "memberId": "m4",
+          "phone": "+237690000001",
+          "channel": "sms",
+          "type": "predictive-24h",
+          "status": "queued",
+          "dueDate": "2026-06-26",
+          "message": "Reminder: Tontine Unity Builders payment of 25000 XAF is due on 2026-06-26.",
+          "daysLeft": -12,
+          "createdAt": "2026-07-08T18:25:43.694Z"
+        }
+      ],
+      "notifications": [
+        {
+          "id": "Xkag7Z1n",
+          "memberId": "kHn6g4tX",
+          "phone": "657276085",
+          "channel": "whatsapp",
+          "provider": "whatsapp-business-api",
+          "status": "queued",
+          "receiptId": null,
+          "message": "24h reminder: Tontine Unity Builders meeting/payment is due on 2026-06-26.",
+          "createdAt": "2026-07-08T21:05:50.676Z"
+        },
+        {
+          "id": "qv3zPty7",
+          "memberId": "m5",
+          "phone": "+237690000002",
+          "channel": "whatsapp",
+          "provider": "whatsapp-business-api",
+          "status": "queued",
+          "receiptId": null,
+          "message": "24h reminder: Tontine Unity Builders meeting/payment is due on 2026-06-26.",
+          "createdAt": "2026-07-08T18:25:43.694Z"
+        },
+        {
+          "id": "h8Z9NZ6F",
+          "memberId": "m4",
+          "phone": "+237690000001",
+          "channel": "whatsapp",
+          "provider": "whatsapp-business-api",
+          "status": "queued",
+          "receiptId": null,
+          "message": "24h reminder: Tontine Unity Builders meeting/payment is due on 2026-06-26.",
+          "createdAt": "2026-07-08T18:25:43.694Z"
+        }
+      ],
+      "lateFees": [
+        {
+          "id": "7rTXit0wTI",
+          "memberId": "kHn6g4tX",
+          "memberName": "FOTSO",
+          "amount": 2500,
+          "dueDate": "2026-06-26",
+          "status": "applied",
+          "createdAt": "2026-07-08T21:05:50.677Z"
+        },
+        {
+          "id": "h-jdlzbx9C",
+          "memberId": "m5",
+          "memberName": "Mireille K.",
+          "amount": 2500,
+          "dueDate": "2026-06-26",
+          "status": "applied",
+          "createdAt": "2026-07-08T18:25:43.694Z"
+        },
+        {
+          "id": "PAL2PEH696",
+          "memberId": "m4",
+          "memberName": "Jean T.",
+          "amount": 2500,
+          "dueDate": "2026-06-26",
+          "status": "applied",
+          "createdAt": "2026-07-08T18:25:43.694Z"
+        }
+      ],
+      "rules": {
+        "latePenaltyPercent": 10,
+        "lateFeeAmount": 2500,
+        "loanInterestRate": 5,
+        "maxLoanMultiplier": 3,
+        "voteApprovalThreshold": 60,
+        "rotationIntervalDays": 30
+      },
+      "paymentGateway": {
+        "name": "Unified Payment Aggregator",
+        "providers": [
+          "mtn-momo",
+          "orange-money",
+          "bank-transfer"
+        ],
+        "status": "sandbox",
+        "settlementAccount": "TONTINE-POOL-XAF"
+      },
+      "loanApplications": [],
+      "paymentIntents": [],
+      "rotations": [],
+      "votes": [],
+      "messages": [],
+      "minutes": [],
+      "education": [
+        {
+          "id": "edu-budget",
+          "title": "Budget before contribution day",
+          "body": "Reserve tontine money first, then plan daily spending from the remainder."
+        },
+        {
+          "id": "edu-loan",
+          "title": "Borrow only for productive needs",
+          "body": "A tontine loan is healthiest when it protects income, stock, school fees, or emergencies."
+        },
+        {
+          "id": "edu-proof",
+          "title": "Keep receipts",
+          "body": "Receipts and audit logs protect every member and make meetings faster."
+        }
+      ]
+    }
+  ],
+  "audit": [
+    {
+      "id": "GA29Wwjit7",
+      "groupId": "solidarity-women",
+      "action": "login",
+      "details": {
+        "role": "member"
+      },
+      "previousHash": "1ef3c71c9f160c00e901e2083fc288aa304b0e94ce36060a72a47ea7a8060f2f",
+      "createdAt": "2026-07-09T20:26:19.189Z",
+      "hash": "a889da7c897a956c22ea012354b7e99ececc5427c86adb3503ec82cc49e95ae7"
+    },
+    {
+      "id": "OARue5oow5",
+      "groupId": "unity-builders",
+      "action": "kyc_verified",
+      "details": {
+        "memberId": "m4"
+      },
+      "previousHash": "a9e0e47a3751382d0691df092294c7482dd4d99346837223c12459865838a599",
+      "createdAt": "2026-07-08T21:06:12.168Z",
+      "hash": "1ef3c71c9f160c00e901e2083fc288aa304b0e94ce36060a72a47ea7a8060f2f"
+    },
+    {
+      "id": "Duv-rJRO9q",
+      "groupId": "unity-builders",
+      "action": "kyc_verified",
+      "details": {
+        "memberId": "m5"
+      },
+      "previousHash": "f1bf5c5e36e3726ca1e56ff9ccf50a85daed8f30af8c841ed5afa46d48f79945",
+      "createdAt": "2026-07-08T21:06:10.139Z",
+      "hash": "a9e0e47a3751382d0691df092294c7482dd4d99346837223c12459865838a599"
+    },
+    {
+      "id": "PUPomX7sRW",
+      "groupId": "unity-builders",
+      "action": "kyc_verified",
+      "details": {
+        "memberId": "kHn6g4tX"
+      },
+      "previousHash": "eaacbeb03e4d97cd45b82940d1a7222f5f0ead63d11e87406867a01bcfdf4e3a",
+      "createdAt": "2026-07-08T21:06:01.999Z",
+      "hash": "f1bf5c5e36e3726ca1e56ff9ccf50a85daed8f30af8c841ed5afa46d48f79945"
+    },
+    {
+      "id": "va7fUvnmOe",
+      "groupId": "unity-builders",
+      "action": "late_fee_applied",
+      "details": {
+        "memberId": "kHn6g4tX",
+        "amount": 2500,
+        "dueDate": "2026-06-26"
+      },
+      "previousHash": "ca968df915a9c90d30a8af67fb947b36d2c2dca9448aab268935fd9b21cb5132",
+      "createdAt": "2026-07-08T21:05:50.677Z",
+      "hash": "eaacbeb03e4d97cd45b82940d1a7222f5f0ead63d11e87406867a01bcfdf4e3a"
+    },
+    {
+      "id": "6qEZvR6StQ",
+      "groupId": "unity-builders",
+      "action": "predictive_reminder_queued",
+      "details": {
+        "memberId": "kHn6g4tX",
+        "dueDate": "2026-06-26"
+      },
+      "previousHash": "670cd87817bf301073cc8c60a8fe57bd12535eb0cfa97dd5d4684131649ad122",
+      "createdAt": "2026-07-08T21:05:50.677Z",
+      "hash": "ca968df915a9c90d30a8af67fb947b36d2c2dca9448aab268935fd9b21cb5132"
+    },
+    {
+      "id": "NMwjAZJi4D",
+      "groupId": "unity-builders",
+      "action": "member_created",
+      "details": {
+        "memberId": "kHn6g4tX",
+        "role": "member"
+      },
+      "previousHash": "7bd3695eae650c04d74bc6f44a1c97df5fc0f138ae0bc4781129e44f395764ba",
+      "createdAt": "2026-07-08T21:05:50.596Z",
+      "hash": "670cd87817bf301073cc8c60a8fe57bd12535eb0cfa97dd5d4684131649ad122"
+    },
+    {
+      "id": "qfO16CducO",
+      "groupId": "unity-builders",
+      "action": "login",
+      "details": {
+        "role": "admin"
+      },
+      "previousHash": "947f454f0d63a156efba34d4beca57dd26a79efacbb2babf9d725743b963c000",
+      "createdAt": "2026-07-08T21:04:55.438Z",
+      "hash": "7bd3695eae650c04d74bc6f44a1c97df5fc0f138ae0bc4781129e44f395764ba"
+    },
+    {
+      "id": "2_nfL9lSzw",
+      "groupId": "unity-builders",
+      "action": "login",
+      "details": {
+        "role": "member"
+      },
+      "previousHash": "0332ad05fddcfaa5e7d7d1d0b2d03cf4657be7cee236a8c4663561898019583c",
+      "createdAt": "2026-07-08T21:04:23.558Z",
+      "hash": "947f454f0d63a156efba34d4beca57dd26a79efacbb2babf9d725743b963c000"
+    },
+    {
+      "id": "LPLyv1hib1",
+      "groupId": "unity-builders",
+      "action": "login",
+      "details": {
+        "role": "secretary"
+      },
+      "previousHash": "1a83add3eafe511ab1a95b37de3deada391271de991d5c52dc4f21ebb4960769",
+      "createdAt": "2026-07-08T21:03:37.044Z",
+      "hash": "0332ad05fddcfaa5e7d7d1d0b2d03cf4657be7cee236a8c4663561898019583c"
+    },
+    {
+      "id": "ghGj8kzjXP",
+      "groupId": "solidarity-women",
+      "action": "login",
+      "details": {
+        "role": "admin"
+      },
+      "previousHash": "35136a8090c2d570b4b96cd3fd94498dc8207bac0e86203f27b6e5ea2067fb4d",
+      "createdAt": "2026-07-08T21:00:59.130Z",
+      "hash": "1a83add3eafe511ab1a95b37de3deada391271de991d5c52dc4f21ebb4960769"
+    },
+    {
+      "id": "pdV0HZwSFO",
+      "groupId": "solidarity-women",
+      "action": "login",
+      "details": {
+        "role": "secretary"
+      },
+      "previousHash": "2e3f583ddec76c204e205e159c9a066b4679b869fffa8c2cfa8c3342e61ad7d5",
+      "createdAt": "2026-07-08T21:00:05.675Z",
+      "hash": "35136a8090c2d570b4b96cd3fd94498dc8207bac0e86203f27b6e5ea2067fb4d"
+    },
+    {
+      "id": "XD4wIyxoaR",
+      "groupId": "solidarity-women",
+      "action": "login",
+      "details": {
+        "role": "treasurer"
+      },
+      "previousHash": "10e6774bcaadc98360f0c25b59dff78c49ef05fa598776bac78b713a14a6cef3",
+      "createdAt": "2026-07-08T20:58:42.953Z",
+      "hash": "2e3f583ddec76c204e205e159c9a066b4679b869fffa8c2cfa8c3342e61ad7d5"
+    },
+    {
+      "id": "WkRVI8TaXa",
+      "groupId": "solidarity-women",
+      "action": "loan_application_submitted",
+      "details": {
+        "applicationId": "s0v08LSKme",
+        "memberId": "m1",
+        "amount": 30000
+      },
+      "previousHash": "7a1c9633bdfbca28723488e71e175362e37133ce097e637b97e546b319e36cbb",
+      "createdAt": "2026-07-08T20:56:17.276Z",
+      "hash": "10e6774bcaadc98360f0c25b59dff78c49ef05fa598776bac78b713a14a6cef3"
+    },
+    {
+      "id": "w6tIlu__Oc",
+      "groupId": "solidarity-women",
+      "action": "login",
+      "details": {
+        "role": "member"
+      },
+      "previousHash": "be2ae5a68126d844428c31459c135b0260bf8b4ef1abf7ec90f46f949b81d1bb",
+      "createdAt": "2026-07-08T20:55:15.710Z",
+      "hash": "7a1c9633bdfbca28723488e71e175362e37133ce097e637b97e546b319e36cbb"
+    },
+    {
+      "id": "9RtpsPhWsL",
+      "groupId": "solidarity-women",
+      "action": "login",
+      "details": {
+        "role": "member"
+      },
+      "previousHash": "726a2752cdd8c17d9f2ff76f674bb5ac050594cfa333c541ce4cea2c0b45b17a",
+      "createdAt": "2026-07-08T19:08:21.496Z",
+      "hash": "be2ae5a68126d844428c31459c135b0260bf8b4ef1abf7ec90f46f949b81d1bb"
+    },
+    {
+      "id": "bhJDTJRtvs",
+      "groupId": "unity-builders",
+      "action": "login",
+      "details": {
+        "role": "secretary"
+      },
+      "previousHash": "3f8a3592f93ac4c42f8bffdffebc2e6c1be5f0098727a1d5742918a79d4ab4da",
+      "createdAt": "2026-07-08T19:07:46.364Z",
+      "hash": "726a2752cdd8c17d9f2ff76f674bb5ac050594cfa333c541ce4cea2c0b45b17a"
+    },
+    {
+      "id": "5r6jIGn1Ma",
+      "groupId": "solidarity-women",
+      "action": "monthly_report_generated",
+      "details": {
+        "role": "member"
+      },
+      "previousHash": "6b52ccd119e90f5b5ff3407d8f25ce8ce579136bca0151adfb139fd109c335f5",
+      "createdAt": "2026-07-08T19:06:45.653Z",
+      "hash": "3f8a3592f93ac4c42f8bffdffebc2e6c1be5f0098727a1d5742918a79d4ab4da"
+    },
+    {
+      "id": "ZjUoMyz7kk",
+      "groupId": "solidarity-women",
+      "action": "login",
+      "details": {
+        "role": "member"
+      },
+      "previousHash": "a2b35b2fe04f2a599bcfa3aaf2aa8422c9a3e958aea53bc5dbe298ec50261c75",
+      "createdAt": "2026-07-08T19:06:03.986Z",
+      "hash": "6b52ccd119e90f5b5ff3407d8f25ce8ce579136bca0151adfb139fd109c335f5"
+    },
+    {
+      "id": "aakwgcwvcl",
+      "groupId": "solidarity-women",
+      "action": "login",
+      "details": {
+        "role": "member"
+      },
+      "previousHash": "0638600d8c7b23c2599813d7fde9ce23df82e9737307716092cf5d220b0cfc4b",
+      "createdAt": "2026-07-08T18:40:05.132Z",
+      "hash": "a2b35b2fe04f2a599bcfa3aaf2aa8422c9a3e958aea53bc5dbe298ec50261c75"
+    },
+    {
+      "id": "PVNooWCByL",
+      "groupId": "solidarity-women",
+      "action": "login",
+      "details": {
+        "role": "member"
+      },
+      "previousHash": "f46450bce55a3184551abbc911e0c167a96ceeae6eb0c00c72e1325d8ea7202a",
+      "createdAt": "2026-07-08T18:26:03.836Z",
+      "hash": "0638600d8c7b23c2599813d7fde9ce23df82e9737307716092cf5d220b0cfc4b"
+    },
+    {
+      "id": "SVz3oUnlEe",
+      "groupId": "unity-builders",
+      "action": "late_fee_applied",
+      "details": {
+        "memberId": "m5",
+        "amount": 2500,
+        "dueDate": "2026-06-26"
+      },
+      "previousHash": "a68a8bb0eda2f988dca565107dcab96e033c55d7df77e009e6d918e07eedd5b6",
+      "createdAt": "2026-07-08T18:25:43.694Z",
+      "hash": "f46450bce55a3184551abbc911e0c167a96ceeae6eb0c00c72e1325d8ea7202a"
+    },
+    {
+      "id": "YDKqf5vhlG",
+      "groupId": "unity-builders",
+      "action": "late_fee_applied",
+      "details": {
+        "memberId": "m4",
+        "amount": 2500,
+        "dueDate": "2026-06-26"
+      },
+      "previousHash": "193a169cacda5c992bc23f1a1b465e45450667ad2035fa830e1ddf14784d4514",
+      "createdAt": "2026-07-08T18:25:43.694Z",
+      "hash": "a68a8bb0eda2f988dca565107dcab96e033c55d7df77e009e6d918e07eedd5b6"
+    },
+    {
+      "id": "wvUr1p16YZ",
+      "groupId": "unity-builders",
+      "action": "predictive_reminder_queued",
+      "details": {
+        "memberId": "m5",
+        "dueDate": "2026-06-26"
+      },
+      "previousHash": "7f4315df831b08e3a648ebf5e179d303f6435f99f8b32c51b489a9e9c1794dc5",
+      "createdAt": "2026-07-08T18:25:43.694Z",
+      "hash": "193a169cacda5c992bc23f1a1b465e45450667ad2035fa830e1ddf14784d4514"
+    },
+    {
+      "id": "dobLJ81DM1",
+      "groupId": "unity-builders",
+      "action": "predictive_reminder_queued",
+      "details": {
+        "memberId": "m4",
+        "dueDate": "2026-06-26"
+      },
+      "previousHash": "9ceecba4ea43906df57f32c20ce886050b30eacbd8ea4c8eb1673b2c43412ff1",
+      "createdAt": "2026-07-08T18:25:43.694Z",
+      "hash": "7f4315df831b08e3a648ebf5e179d303f6435f99f8b32c51b489a9e9c1794dc5"
+    },
+    {
+      "id": "BVhVPzUGGq",
+      "groupId": "solidarity-women",
+      "action": "late_fee_applied",
+      "details": {
+        "memberId": "m3",
+        "amount": 1000,
+        "dueDate": "2026-06-27"
+      },
+      "previousHash": "a7eff36e1b2a448d7fa08f9c2a4d6120faa45f4a40a0a17976e25184f7af930d",
+      "createdAt": "2026-07-08T18:25:43.694Z",
+      "hash": "9ceecba4ea43906df57f32c20ce886050b30eacbd8ea4c8eb1673b2c43412ff1"
+    },
+    {
+      "id": "nAxYhrMzWO",
+      "groupId": "solidarity-women",
+      "action": "late_fee_applied",
+      "details": {
+        "memberId": "m2",
+        "amount": 1000,
+        "dueDate": "2026-06-27"
+      },
+      "previousHash": "96061f37ee69ddd882978480f546e56e2b863611ceda5ba99dda0bfe8aca01d9",
+      "createdAt": "2026-07-08T18:25:43.693Z",
+      "hash": "a7eff36e1b2a448d7fa08f9c2a4d6120faa45f4a40a0a17976e25184f7af930d"
+    },
+    {
+      "id": "LKnvILjkcX",
+      "groupId": "solidarity-women",
+      "action": "predictive_reminder_queued",
+      "details": {
+        "memberId": "m3",
+        "dueDate": "2026-06-27"
+      },
+      "previousHash": "69ba20eea8d872f8113caf9e4055eab05096b2d59cc63d2d5f06907ddd5640df",
+      "createdAt": "2026-07-08T18:25:43.693Z",
+      "hash": "96061f37ee69ddd882978480f546e56e2b863611ceda5ba99dda0bfe8aca01d9"
+    },
+    {
+      "id": "DrFg3yyHl0",
+      "groupId": "solidarity-women",
+      "action": "predictive_reminder_queued",
+      "details": {
+        "memberId": "m2",
+        "dueDate": "2026-06-27"
+      },
+      "previousHash": "a9009752e70eb65ab0458729969e6bb4e080629c2f1857b3ab0169631ff0a01c",
+      "createdAt": "2026-07-08T18:25:43.693Z",
+      "hash": "69ba20eea8d872f8113caf9e4055eab05096b2d59cc63d2d5f06907ddd5640df"
+    },
+    {
+      "id": "rPej54-fqa",
+      "groupId": "solidarity-women",
+      "action": "predictive_reminder_queued",
+      "details": {
+        "memberId": "m1",
+        "dueDate": "2026-06-27"
+      },
+      "previousHash": "805f879a305f61293ebe83b8b452f44ef3cb5ffd7ba3d60396ddfbcd42806846",
+      "createdAt": "2026-07-08T18:25:43.692Z",
+      "hash": "a9009752e70eb65ab0458729969e6bb4e080629c2f1857b3ab0169631ff0a01c"
+    },
+    {
+      "id": "VO85S_d44V",
+      "groupId": "solidarity-women",
+      "action": "login",
+      "details": {
+        "role": "member"
+      },
+      "previousHash": "8eed5bc532d34e9ed85375c7d718d613b8612f2ebef9cb15815ffb4f823f3f4f",
+      "createdAt": "2026-06-23T21:17:12.808Z",
+      "hash": "805f879a305f61293ebe83b8b452f44ef3cb5ffd7ba3d60396ddfbcd42806846"
+    },
+    {
+      "id": "8J3GYMM7yt",
+      "groupId": "solidarity-women",
+      "action": "login",
+      "details": {
+        "role": "member"
+      },
+      "previousHash": "9d7b6afde13bda88e4ef28fbd660141f73c241e0fdc3f43d7020ce54668a9112",
+      "createdAt": "2026-06-23T20:37:54.604Z",
+      "hash": "8eed5bc532d34e9ed85375c7d718d613b8612f2ebef9cb15815ffb4f823f3f4f"
+    },
+    {
+      "id": "tCA1vA1dip",
+      "groupId": "unity-builders",
+      "action": "login",
+      "details": {
+        "role": "treasurer"
+      },
+      "previousHash": "083c6b169bd552437b001a2ed60699054427da02c076428b7bc8b2f0a7ebde90",
+      "createdAt": "2026-06-23T20:36:57.729Z",
+      "hash": "9d7b6afde13bda88e4ef28fbd660141f73c241e0fdc3f43d7020ce54668a9112"
+    },
+    {
+      "id": "yIRi7ZYGYf",
+      "groupId": "solidarity-women",
+      "action": "login",
+      "details": {
+        "role": "admin"
+      },
+      "previousHash": "0764a99bdbeeea6a0bf8e91b96c45faf915584c416ae7709cf0434b872f7da0e",
+      "createdAt": "2026-06-23T20:36:27.805Z",
+      "hash": "083c6b169bd552437b001a2ed60699054427da02c076428b7bc8b2f0a7ebde90"
+    },
+    {
+      "id": "Jf2OTkJ3NN",
+      "groupId": "unity-builders",
+      "action": "login",
+      "details": {
+        "role": "secretary"
+      },
+      "previousHash": "3b1754aea6c407fe05a91a25017a77fb3aeffcfa9f35793ef32a132cf4b37ad8",
+      "createdAt": "2026-06-23T20:35:44.559Z",
+      "hash": "0764a99bdbeeea6a0bf8e91b96c45faf915584c416ae7709cf0434b872f7da0e"
+    },
+    {
+      "id": "pLs9xhb72f",
+      "groupId": "solidarity-women",
+      "action": "monthly_report_generated",
+      "details": {
+        "role": "admin"
+      },
+      "previousHash": "8e9f06c59b3a83fe99ea58d50336fc67644da8d7103ad49b950e89efa3603939",
+      "createdAt": "2026-06-23T20:30:11.771Z",
+      "hash": "3b1754aea6c407fe05a91a25017a77fb3aeffcfa9f35793ef32a132cf4b37ad8"
+    },
+    {
+      "id": "o7qvn_JYAc",
+      "groupId": "solidarity-women",
+      "action": "login",
+      "details": {
+        "role": "admin"
+      },
+      "previousHash": "64147539fc2515975973fdf498eae8017d6cd92bba79b31a90c4cabea82cdb6c",
+      "createdAt": "2026-06-23T20:30:11.702Z",
+      "hash": "8e9f06c59b3a83fe99ea58d50336fc67644da8d7103ad49b950e89efa3603939"
+    },
+    {
+      "id": "5lbmfVZZ_g",
+      "groupId": "solidarity-women",
+      "action": "payment_reconciled",
+      "details": {
+        "paymentId": "_DAZcIclCc",
+        "memberId": "m1",
+        "balance": 10000
+      },
+      "previousHash": "03aecd7fd27acb0b42d3dabdf97b6364bd742877a9d1a394ed38e669a9339cb9",
+      "createdAt": "2026-06-23T20:29:56.699Z",
+      "hash": "64147539fc2515975973fdf498eae8017d6cd92bba79b31a90c4cabea82cdb6c"
+    },
+    {
+      "id": "kcR-YFd5jv",
+      "groupId": "solidarity-women",
+      "action": "payment_created",
+      "details": {
+        "paymentId": "_DAZcIclCc",
+        "memberId": "m1",
+        "amount": 10000,
+        "provider": "momo"
+      },
+      "previousHash": "1c27b9b865665fcbce908e6c3188964660cc8e1479fcf67b3234a8d9cc472dbd",
+      "createdAt": "2026-06-23T20:29:56.689Z",
+      "hash": "03aecd7fd27acb0b42d3dabdf97b6364bd742877a9d1a394ed38e669a9339cb9"
+    },
+    {
+      "id": "ySkDEM409R",
+      "groupId": "solidarity-women",
+      "action": "login",
+      "details": {
+        "role": "treasurer"
+      },
+      "previousHash": "GENESIS",
+      "createdAt": "2026-06-23T20:29:56.649Z",
+      "hash": "1c27b9b865665fcbce908e6c3188964660cc8e1479fcf67b3234a8d9cc472dbd"
+    }
+  ]
+}
