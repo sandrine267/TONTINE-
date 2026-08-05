@@ -437,6 +437,28 @@
   ],
   "audit": [
     {
+      "id": "mNzeGaIlAV",
+      "groupId": "solidarity-women",
+      "action": "login",
+      "details": {
+        "role": "member"
+      },
+      "previousHash": "9787ba239db827b0659a0296fd787488af7753e8d06d38703265c6ca31b17360",
+      "createdAt": "2026-08-05T07:47:30.948Z",
+      "hash": "2557141fc04d404568178e775891fc042a8912ee173505c11a7371c83f2cb01f"
+    },
+    {
+      "id": "kMiwJVoL-z",
+      "groupId": "solidarity-women",
+      "action": "login",
+      "details": {
+        "role": "member"
+      },
+      "previousHash": "a889da7c897a956c22ea012354b7e99ececc5427c86adb3503ec82cc49e95ae7",
+      "createdAt": "2026-08-05T07:47:19.215Z",
+      "hash": "9787ba239db827b0659a0296fd787488af7753e8d06d38703265c6ca31b17360"
+    },
+    {
       "id": "GA29Wwjit7",
       "groupId": "solidarity-women",
       "action": "login",
