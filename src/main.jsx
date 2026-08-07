@@ -1158,17 +1158,18 @@ function Reports({ group, refresh, t }) {
   });
   const [biometric, setBiometric] = useState("");
   async function downloadReport() {
-    const token = localStorage.getItem("tontine-token");
-    const response = await fetch(`${API}/reports/monthly.csv`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `${group.id || "tontine"}-monthly-report.csv`;
-    link.click();
-    URL.revokeObjectURL(url);
+    const filename = `${group.id || "tontine"}-monthly-report.csv`;
+    try {
+      const token = localStorage.getItem("tontine-token");
+      const response = await fetch(`${API}/reports/monthly.csv`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const type = response.headers.get("content-type") || "";
+      if (!response.ok || !type.includes("text/csv")) throw new Error("Monthly report is unavailable");
+      downloadCsv(filename, await response.text());
+    } catch {
+      downloadCsv(filename, monthlyReportCsv(group));
+    }
   }
 
   return (
@@ -1287,6 +1288,32 @@ function Select({ label, value, onChange, options }) {
 function RecordList({ items, empty, render }) {
   if (!items.length) return <p className="empty">{empty}</p>;
   return <div className="record-list">{items.map((item) => <div key={item.id}>{render(item)}</div>)}</div>;
+}
+
+function monthlyReportCsv(group) {
+  const month = new Date().toISOString().slice(0, 7);
+  const payments = (group.transactions || []).filter((item) => item.createdAt?.startsWith(month));
+  const total = payments.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const rows = [
+    ["Tontine", group.name],
+    ["Month", month],
+    ["Members", (group.members || []).length],
+    ["Total payments", total],
+    [],
+    ["Member", "Role", "Phone", "Health", "Balance"],
+    ...(group.members || []).map((member) => [member.name, member.role, member.phone, member.health?.status || "watch", member.health?.balance || 0])
+  ];
+  return rows.map((row) => row.map((cell) => `"${String(cell ?? "").replaceAll('"', '""')}"`).join(",")).join("\n");
+}
+
+function downloadCsv(filename, contents) {
+  const blob = new Blob([contents], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
 }
 
 function CreateTontineForm({ onSubmit, onCancel, t }) {
