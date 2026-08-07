@@ -408,7 +408,7 @@ function App() {
           messages: [],
           minutes: [],
           education: [],
-          capabilities: ["payments.write", "reports.read", "votes.cast"],
+          capabilities: ["payments.write", "reports.read", "votes.cast", "loans.apply"],
           role: "member"
         }
       ];
@@ -420,7 +420,13 @@ function App() {
         const demoGroup = demoTontines.find((item) => item.id === savedGroup.id);
         if (!demoGroup) return savedGroup;
         const members = (savedGroup.members || []).length > 1 ? savedGroup.members : demoGroup.members;
-        return normalizeGroup({ ...demoGroup, ...savedGroup, members, memberCount: members.length });
+        return normalizeGroup({
+          ...demoGroup,
+          ...savedGroup,
+          members,
+          memberCount: members.length,
+          capabilities: [...new Set([...(demoGroup.capabilities || []), ...(savedGroup.capabilities || [])])]
+        });
       });
       setGroups(saveLocalGroups(migratedGroups));
       const current = readSavedGroup();
@@ -750,7 +756,7 @@ function Shell({ group, setGroup, setGroups, screen, setScreen, refresh, t }) {
         {screen === "dashboard" && <Dashboard group={group} t={t} />}
         {screen === "members" && <Members group={group} setGroup={setGroup} setGroups={setGroups} refresh={refresh} t={t} />}
         {screen === "payments" && <Payments group={group} refresh={refresh} t={t} />}
-        {screen === "loans" && <Loans group={group} refresh={refresh} t={t} />}
+        {screen === "loans" && <Loans group={group} setGroup={setGroup} setGroups={setGroups} refresh={refresh} t={t} />}
         {screen === "rotation" && <Rotation group={group} refresh={refresh} t={t} />}
         {screen === "votes" && <Votes group={group} refresh={refresh} t={t} />}
         {screen === "community" && <Community group={group} refresh={refresh} t={t} />}
@@ -943,37 +949,97 @@ function Payments({ group, refresh, t }) {
   );
 }
 
-function Loans({ group, refresh, t }) {
+function Loans({ group, setGroup, setGroups, refresh, t }) {
   const [form, setForm] = useState({ memberId: group.members[0]?.id || "", amount: "", interestRate: 0, dueDate: "" });
   const [application, setApplication] = useState({ memberId: group.members[0]?.id || "", amount: "", purpose: "" });
   const [repayment, setRepayment] = useState({ loanId: group.loans[0]?.id || "", amount: "", provider: "mtn-momo" });
+  function saveOffline(nextGroup) {
+    const normalized = normalizeGroup(nextGroup);
+    setGroup(normalized);
+    saveCurrentGroup(normalized);
+    saveGroupLocally(normalized);
+    setGroups((current) => upsertGroupInCollection(normalized, current));
+  }
+
+  async function submitApplication() {
+    const member = group.members.find((item) => item.id === application.memberId);
+    const localApplication = {
+      id: `loan-app-${Date.now()}`,
+      memberId: application.memberId,
+      memberName: member?.name || "Member",
+      amount: Number(application.amount),
+      purpose: application.purpose,
+      eligibility: "needs-review",
+      status: "submitted",
+      createdAt: new Date().toISOString()
+    };
+    try {
+      await api("/loan-applications", { method: "POST", body: JSON.stringify(application) });
+      setApplication({ ...application, amount: "", purpose: "" });
+      refresh();
+    } catch {
+      saveOffline({ ...group, loanApplications: [localApplication, ...(group.loanApplications || [])] });
+      setApplication({ ...application, amount: "", purpose: "" });
+    }
+  }
+
+  async function createLoan() {
+    const member = group.members.find((item) => item.id === form.memberId);
+    const localLoan = {
+      id: `loan-${Date.now()}`,
+      memberId: form.memberId,
+      memberName: member?.name || "Member",
+      amount: Number(form.amount),
+      interestRate: Number(form.interestRate || 0),
+      dueDate: form.dueDate,
+      status: "active",
+      balance: Number(form.amount),
+      repayments: [],
+      createdAt: new Date().toISOString()
+    };
+    try {
+      await api("/loans", { method: "POST", body: JSON.stringify(form) });
+      setForm({ ...form, amount: "" });
+      refresh();
+    } catch {
+      saveOffline({ ...group, loans: [localLoan, ...group.loans] });
+      setForm({ ...form, amount: "" });
+      setRepayment((current) => ({ ...current, loanId: localLoan.id }));
+    }
+  }
+
+  async function recordRepayment() {
+    try {
+      await api(`/loans/${repayment.loanId}/repayments`, { method: "POST", body: JSON.stringify(repayment) });
+      setRepayment({ ...repayment, amount: "" });
+      refresh();
+    } catch {
+      const amount = Number(repayment.amount);
+      const loans = group.loans.map((loan) => loan.id !== repayment.loanId ? loan : {
+        ...loan,
+        balance: Math.max(0, Number(loan.balance ?? loan.amount) - amount),
+        status: Number(loan.balance ?? loan.amount) - amount <= 0 ? "repaid" : loan.status,
+        repayments: [{ id: `repayment-${Date.now()}`, amount, provider: repayment.provider, createdAt: new Date().toISOString() }, ...(loan.repayments || [])]
+      });
+      saveOffline({ ...group, loans });
+      setRepayment({ ...repayment, amount: "" });
+    }
+  }
   return (
     <>
       <h2>{t.loans}</h2>
-      {can(group, "loans.apply") && <InlineForm title={t.applyLoan} onSubmit={async () => {
-        await api("/loan-applications", { method: "POST", body: JSON.stringify(application) });
-        setApplication({ ...application, amount: "", purpose: "" });
-        refresh();
-      }}>
+      {can(group, "loans.apply") && <InlineForm title={t.applyLoan} onSubmit={submitApplication}>
         <Select label={t.member} value={application.memberId} onChange={(memberId) => setApplication({ ...application, memberId })} options={group.members.map((m) => [m.id, m.name])} />
         <Input label={t.amount} type="number" value={application.amount} onChange={(amount) => setApplication({ ...application, amount })} />
         <Input label={t.purpose} value={application.purpose} onChange={(purpose) => setApplication({ ...application, purpose })} />
       </InlineForm>}
-      {can(group, "loans.write") && <InlineForm title={t.loanMember} onSubmit={async () => {
-        await api("/loans", { method: "POST", body: JSON.stringify(form) });
-        setForm({ ...form, amount: "" });
-        refresh();
-      }}>
+      {can(group, "loans.write") && <InlineForm title={t.loanMember} onSubmit={createLoan}>
         <Select label={t.member} value={form.memberId} onChange={(memberId) => setForm({ ...form, memberId })} options={group.members.map((m) => [m.id, m.name])} />
         <Input label={t.amount} type="number" value={form.amount} onChange={(amount) => setForm({ ...form, amount })} />
         <Input label={t.interest} type="number" value={form.interestRate} onChange={(interestRate) => setForm({ ...form, interestRate })} />
         <Input label={t.dueDate} type="date" value={form.dueDate} onChange={(dueDate) => setForm({ ...form, dueDate })} />
       </InlineForm>}
-      {group.loans.length > 0 && <InlineForm title={t.repayment} onSubmit={async () => {
-        await api(`/loans/${repayment.loanId}/repayments`, { method: "POST", body: JSON.stringify(repayment) });
-        setRepayment({ ...repayment, amount: "" });
-        refresh();
-      }}>
+      {group.loans.length > 0 && <InlineForm title={t.repayment} onSubmit={recordRepayment}>
         <Select label={t.loans} value={repayment.loanId} onChange={(loanId) => setRepayment({ ...repayment, loanId })} options={group.loans.map((loan) => [loan.id, `${loan.memberName} - ${money(loan.balance ?? loan.amount, group.currency)}`])} />
         <Input label={t.amount} type="number" value={repayment.amount} onChange={(amount) => setRepayment({ ...repayment, amount })} />
         <Select label="Method" value={repayment.provider} onChange={(provider) => setRepayment({ ...repayment, provider })} options={[["mtn-momo", t.momo], ["orange-money", t.om], ["bank-transfer", "Bank"], ["cash", t.cash]]} />
@@ -985,8 +1051,15 @@ function Loans({ group, refresh, t }) {
             {item.memberName} - {money(item.amount, group.currency)} - {item.eligibility} - {item.status}
             {can(group, "loans.approve") && item.status === "submitted" && (
               <button className="secondary mini inline-action" onClick={async () => {
-                await api(`/loan-applications/${item.id}/approve`, { method: "POST", body: JSON.stringify({}) });
-                refresh();
+                try {
+                  await api(`/loan-applications/${item.id}/approve`, { method: "POST", body: JSON.stringify({}) });
+                  refresh();
+                } catch {
+                  const applications = group.loanApplications.map((applicationItem) => applicationItem.id === item.id ? { ...applicationItem, status: "approved" } : applicationItem);
+                  const loan = { id: `loan-${Date.now()}`, memberId: item.memberId, memberName: item.memberName, amount: Number(item.amount), interestRate: 0, dueDate: group.nextPaymentDue || "", status: "active", balance: Number(item.amount), repayments: [], createdAt: new Date().toISOString() };
+                  saveOffline({ ...group, loanApplications: applications, loans: [loan, ...group.loans] });
+                  setRepayment((current) => ({ ...current, loanId: loan.id }));
+                }
               }}>{t.approve}</button>
             )}
           </span>
