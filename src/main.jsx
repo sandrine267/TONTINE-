@@ -100,6 +100,8 @@ const copy = {
     notifications: "Notifications",
     reconcile: "Run reconciliation",
     downloadReport: "Download monthly report",
+    backup: "Download backup",
+    activity: "Recent activity",
     whatsapp: "WhatsApp",
     balance: "Balance",
     contribution: "Contribution",
@@ -188,6 +190,8 @@ const copy = {
     notifications: "Notifications",
     reconcile: "Lancer rapprochement",
     downloadReport: "Telecharger rapport mensuel",
+    backup: "Telecharger sauvegarde",
+    activity: "Activite recente",
     whatsapp: "WhatsApp",
     balance: "Solde",
     contribution: "Cotisation",
@@ -776,6 +780,7 @@ function Shell({ group, setGroup, setGroups, screen, setScreen, refresh, t }) {
 function Dashboard({ group, t }) {
   const total = useMemo(() => group.transactions.reduce((sum, item) => sum + Number(item.amount || 0), 0), [group.transactions]);
   const activeLoans = group.loans.filter((loan) => loan.status === "active").length;
+  const activity = loadLocalActivity(group.id);
   return (
     <>
       <h2>{t.dashboard}</h2>
@@ -799,6 +804,10 @@ function Dashboard({ group, t }) {
         <RecordList items={group.transactions.slice(0, 5)} empty={t.noItems} render={(item) => (
           <span>{item.memberName} - {money(item.amount, group.currency)} - {item.provider}</span>
         )} />
+      </section>
+      <section className="table-card stack-gap">
+        <h3>{t.activity}</h3>
+        <RecordList items={activity} empty={t.noItems} render={(item) => <span>{item.createdAt} - {item.action}</span>} />
       </section>
     </>
   );
@@ -860,6 +869,7 @@ function MemberForm({ group, setGroup, setGroups, refresh, t }) {
     saveCurrentGroup(updatedGroup);
     saveGroupLocally(updatedGroup);
     setGroups((currentGroups) => upsertGroupInCollection(updatedGroup, currentGroups));
+    addLocalActivity(group, `Member added: ${newMember.name}`);
     setForm({ name: "", phone: "", identityId: "", role: "member" });
     try {
       await api("/admin/members", { method: "POST", body: JSON.stringify(form) });
@@ -896,6 +906,7 @@ function Payments({ group, refresh, t }) {
     };
     payments.push(newPayment);
     localStorage.setItem(`payments-${group.id}`, JSON.stringify(payments));
+    addLocalActivity(group, `Payment recorded for ${newPayment.memberName}: ${newPayment.amount} ${group.currency}`);
 
     const receipt = {
       id: `R-${Date.now()}`,
@@ -924,6 +935,7 @@ function Payments({ group, refresh, t }) {
   }
   
   const localPayments = JSON.parse(localStorage.getItem(`payments-${group.id}`) || "[]");
+  const allPayments = [...(group.transactions || []), ...localPayments];
   
   return (
     <>
@@ -948,6 +960,14 @@ function Payments({ group, refresh, t }) {
         <RecordList items={localPayments} empty={t.noItems} render={(item) => (
           <span>{item.memberName} - {item.amount} {group.currency} - {item.status}</span>
         )} />
+      </section>
+      <section className="table-card stack-gap">
+        <h3>Member payment history</h3>
+        <RecordList items={group.members} empty={t.noItems} render={(member) => {
+          const payments = allPayments.filter((payment) => payment.memberId === member.id);
+          const total = payments.reduce((sum, payment) => sum + Number(payment.amount || 0), 0);
+          return <span>{member.name} - {payments.length} payment(s) - {money(total, group.currency)}</span>;
+        }} />
       </section>
     </>
   );
@@ -983,6 +1003,7 @@ function Loans({ group, setGroup, setGroups, refresh, t }) {
       refresh();
     } catch {
       saveOffline({ ...group, loanApplications: [localApplication, ...(group.loanApplications || [])] });
+      addLocalActivity(group, `Loan application submitted for ${localApplication.memberName}`);
       setApplication({ ...application, amount: "", purpose: "" });
     }
   }
@@ -1007,6 +1028,7 @@ function Loans({ group, setGroup, setGroups, refresh, t }) {
       refresh();
     } catch {
       saveOffline({ ...group, loans: [localLoan, ...group.loans] });
+      addLocalActivity(group, `Loan created for ${localLoan.memberName}: ${localLoan.amount} ${group.currency}`);
       setForm({ ...form, amount: "" });
       setRepayment((current) => ({ ...current, loanId: localLoan.id }));
     }
@@ -1026,6 +1048,7 @@ function Loans({ group, setGroup, setGroups, refresh, t }) {
         repayments: [{ id: `repayment-${Date.now()}`, amount, provider: repayment.provider, createdAt: new Date().toISOString() }, ...(loan.repayments || [])]
       });
       saveOffline({ ...group, loans });
+      addLocalActivity(group, `Loan repayment recorded: ${amount} ${group.currency}`);
       setRepayment({ ...repayment, amount: "" });
     }
   }
@@ -1063,6 +1086,7 @@ function Loans({ group, setGroup, setGroups, refresh, t }) {
                   const applications = group.loanApplications.map((applicationItem) => applicationItem.id === item.id ? { ...applicationItem, status: "approved" } : applicationItem);
                   const loan = { id: `loan-${Date.now()}`, memberId: item.memberId, memberName: item.memberName, amount: Number(item.amount), interestRate: 0, dueDate: group.nextPaymentDue || "", status: "active", balance: Number(item.amount), repayments: [], createdAt: new Date().toISOString() };
                   saveOffline({ ...group, loanApplications: applications, loans: [loan, ...group.loans] });
+                  addLocalActivity(group, `Loan approved for ${item.memberName}`);
                   setRepayment((current) => ({ ...current, loanId: loan.id }));
                 }
                 }}>{t.approve}</button>
@@ -1073,6 +1097,7 @@ function Loans({ group, setGroup, setGroups, refresh, t }) {
                   } catch {
                     const applications = group.loanApplications.map((applicationItem) => applicationItem.id === item.id ? { ...applicationItem, status: "rejected" } : applicationItem);
                     saveOffline({ ...group, loanApplications: applications });
+                    addLocalActivity(group, `Loan rejected for ${item.memberName}`);
                   }
                 }}>{t.reject}</button>
               </>
@@ -1265,6 +1290,7 @@ function Reports({ group, refresh, t }) {
       <h2>{t.reports}</h2>
       <div className="report-actions">
         <button className="primary compact" onClick={downloadReport}><Download size={18} /> {t.downloadReport}</button>
+        <button className="secondary compact" onClick={() => downloadBackup(group)}><Download size={18} /> {t.backup}</button>
         <button className="secondary compact" onClick={async () => {
           if (navigator.credentials?.get) {
             setBiometric("Device biometric prompt ready");
@@ -1378,6 +1404,21 @@ function RecordList({ items, empty, render }) {
   return <div className="record-list">{items.map((item) => <div key={item.id}>{render(item)}</div>)}</div>;
 }
 
+function loadLocalActivity(groupId) {
+  try {
+    const entries = JSON.parse(localStorage.getItem(`activity-${groupId}`) || "[]");
+    return Array.isArray(entries) ? entries : [];
+  } catch {
+    return [];
+  }
+}
+
+function addLocalActivity(group, action) {
+  const entries = loadLocalActivity(group.id);
+  entries.unshift({ id: `activity-${Date.now()}`, action, createdAt: new Date().toLocaleString() });
+  localStorage.setItem(`activity-${group.id}`, JSON.stringify(entries.slice(0, 50)));
+}
+
 function monthlyReportCsv(group) {
   const month = new Date().toISOString().slice(0, 7);
   const payments = (group.transactions || []).filter((item) => item.createdAt?.startsWith(month));
@@ -1400,6 +1441,23 @@ function downloadCsv(filename, contents) {
   const link = document.createElement("a");
   link.href = url;
   link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function downloadBackup(group) {
+  const backup = {
+    exportedAt: new Date().toISOString(),
+    group,
+    localPayments: JSON.parse(localStorage.getItem(`payments-${group.id}`) || "[]"),
+    localReceipts: JSON.parse(localStorage.getItem(`receipts-${group.id}`) || "[]"),
+    activity: loadLocalActivity(group.id)
+  };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `${group.id || "tontine"}-backup.json`;
   link.click();
   URL.revokeObjectURL(url);
 }
