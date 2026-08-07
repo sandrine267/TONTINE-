@@ -373,7 +373,9 @@ function App() {
           currency: "XAF",
           contributionAmount: 10000,
           members: [
-            { id: "m1", name: "Alice", role: "admin", phone: "+237670000001", identityId: "ID001", kycStatus: "verified", creditScore: 750, health: { balance: 5000, status: "healthy", color: "green" } }
+            { id: "m1", name: "Amina N.", role: "treasurer", phone: "+237670000001", identityId: "CNI-001-2026", kycStatus: "verified", creditScore: 750, health: { balance: 5000, status: "healthy", color: "green" } },
+            { id: "m2", name: "Brenda F.", role: "member", phone: "+237670000002", identityId: "CNI-002-2026", kycStatus: "verified", creditScore: 680, health: { balance: 0, status: "healthy", color: "green" } },
+            { id: "m3", name: "Grace M.", role: "member", phone: "+237670000003", identityId: "CNI-003-2026", kycStatus: "pending", creditScore: 640, health: { balance: 0, status: "warning", color: "yellow" } }
           ],
           transactions: [],
           receipts: [],
@@ -395,7 +397,9 @@ function App() {
           currency: "XAF",
           contributionAmount: 25000,
           members: [
-            { id: "m2", name: "Bob", role: "member", phone: "+237690000002", identityId: "ID002", kycStatus: "pending", creditScore: 620, health: { balance: 2500, status: "warning", color: "yellow" } }
+            { id: "m4", name: "Jean T.", role: "admin", phone: "+237690000001", identityId: "CNI-004-2026", kycStatus: "verified", creditScore: 720, health: { balance: 2500, status: "healthy", color: "green" } },
+            { id: "m5", name: "Mireille K.", role: "member", phone: "+237690000002", identityId: "CNI-005-2026", kycStatus: "verified", creditScore: 650, health: { balance: 0, status: "healthy", color: "green" } },
+            { id: "m6", name: "FOTSO", role: "member", phone: "657276085", identityId: "CNI-006-2026", kycStatus: "verified", creditScore: 630, health: { balance: 0, status: "healthy", color: "green" } }
           ],
           transactions: [],
           receipts: [],
@@ -409,6 +413,21 @@ function App() {
         }
       ];
       setGroups(saveLocalGroups(demoTontines));
+    } else {
+      // Upgrade the first offline demo that was released with only one member.
+      const existingGroups = loadLocalGroups();
+      const migratedGroups = existingGroups.map((savedGroup) => {
+        const demoGroup = demoTontines.find((item) => item.id === savedGroup.id);
+        if (!demoGroup || (savedGroup.members || []).length > 1) return savedGroup;
+        return normalizeGroup({ ...demoGroup, ...savedGroup, members: demoGroup.members, memberCount: demoGroup.members.length });
+      });
+      setGroups(saveLocalGroups(migratedGroups));
+      const current = readSavedGroup();
+      const migratedCurrent = migratedGroups.find((item) => item.id === current?.id);
+      if (migratedCurrent && (current.members || []).length <= 1) {
+        setGroup(migratedCurrent);
+        saveCurrentGroup(migratedCurrent);
+      }
     }
   }, []);
 
