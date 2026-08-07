@@ -366,7 +366,7 @@ function App() {
         {
           id: "solidarity-women",
           name: "Solidarity Women Group",
-          memberCount: 8,
+          memberCount: 3,
           pin: "1234",
           adminPin: "9999",
           rolePins: { treasurer: "5555", secretary: "7777" },
@@ -390,7 +390,7 @@ function App() {
         {
           id: "youth-savings",
           name: "Youth Savings Club",
-          memberCount: 12,
+          memberCount: 3,
           pin: "2468",
           adminPin: "8642",
           rolePins: { treasurer: "5555", secretary: "7777" },
@@ -418,8 +418,9 @@ function App() {
       const existingGroups = loadLocalGroups();
       const migratedGroups = existingGroups.map((savedGroup) => {
         const demoGroup = demoTontines.find((item) => item.id === savedGroup.id);
-        if (!demoGroup || (savedGroup.members || []).length > 1) return savedGroup;
-        return normalizeGroup({ ...demoGroup, ...savedGroup, members: demoGroup.members, memberCount: demoGroup.members.length });
+        if (!demoGroup) return savedGroup;
+        const members = (savedGroup.members || []).length > 1 ? savedGroup.members : demoGroup.members;
+        return normalizeGroup({ ...demoGroup, ...savedGroup, members, memberCount: members.length });
       });
       setGroups(saveLocalGroups(migratedGroups));
       const current = readSavedGroup();
