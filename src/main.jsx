@@ -25,7 +25,21 @@ import {
 } from "lucide-react";
 import "./styles.css";
 
-const API = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "/api" : `http://${window.location.hostname}:4000/api`);
+const API = (() => {
+  const configured = import.meta.env.VITE_API_URL;
+  if (configured) {
+    const normalized = configured.replace(/\/$/, "");
+    return normalized.endsWith("/api") ? normalized : `${normalized}/api`;
+  }
+
+  const host = window.location.hostname;
+  if (import.meta.env.PROD) {
+    if (host.endsWith(".loca.lt")) return "https://itchy-flies-move.loca.lt/api";
+    return "/api";
+  }
+
+  return `http://${host}:4000/api`;
+})();
 
 const copy = {
   en: {
@@ -214,29 +228,76 @@ function can(group, permission) {
 
 function saveGroupLocally(group) {
   if (!group?.id) return;
-  localStorage.setItem(`group-${group.id}`, JSON.stringify(group));
+  localStorage.setItem(`group-${group.id}`, JSON.stringify(normalizeGroup(group)));
 }
 
 function saveCurrentGroup(group) {
   if (!group?.id) return;
-  localStorage.setItem("current-group", JSON.stringify(group));
+  localStorage.setItem("current-group", JSON.stringify(normalizeGroup(group)));
 }
 
 function loadLocalGroups() {
   const saved = localStorage.getItem("demo-tontines");
-  return saved ? JSON.parse(saved) : [];
+  if (!saved) return [];
+  try {
+    const groups = JSON.parse(saved);
+    return Array.isArray(groups) ? groups.map(normalizeGroup) : [];
+  } catch {
+    localStorage.removeItem("demo-tontines");
+    return [];
+  }
+}
+
+function readSavedGroup() {
+  const saved = localStorage.getItem("current-group");
+  if (!saved) return null;
+  try {
+    return normalizeGroup(JSON.parse(saved));
+  } catch {
+    localStorage.removeItem("current-group");
+    return null;
+  }
+}
+
+// The app can be opened without the API (for example, from a phone's installed
+// PWA or a static host). Keep locally saved and demo groups safe to render.
+function normalizeGroup(group = {}) {
+  return {
+    ...group,
+    name: group.name || "My Tontine",
+    role: group.role || "member",
+    currency: group.currency || "XAF",
+    contributionAmount: Number(group.contributionAmount || 0),
+    members: Array.isArray(group.members) ? group.members : [],
+    transactions: Array.isArray(group.transactions) ? group.transactions : [],
+    loans: Array.isArray(group.loans) ? group.loans : [],
+    loanApplications: Array.isArray(group.loanApplications) ? group.loanApplications : [],
+    receipts: Array.isArray(group.receipts) ? group.receipts : [],
+    reminders: Array.isArray(group.reminders) ? group.reminders : [],
+    notifications: Array.isArray(group.notifications) ? group.notifications : [],
+    messages: Array.isArray(group.messages) ? group.messages : [],
+    minutes: Array.isArray(group.minutes) ? group.minutes : [],
+    education: Array.isArray(group.education) ? group.education : [],
+    rotations: Array.isArray(group.rotations) ? group.rotations : [],
+    votes: Array.isArray(group.votes) ? group.votes : [],
+    lateFees: Array.isArray(group.lateFees) ? group.lateFees : [],
+    audit: Array.isArray(group.audit) ? group.audit : [],
+    projections: Array.isArray(group.projections) ? group.projections : [],
+    capabilities: Array.isArray(group.capabilities) ? group.capabilities : [],
+    rules: group.rules || {},
+    analytics: group.analytics || {},
+    memberCount: group.memberCount || (Array.isArray(group.members) ? group.members.length : 0)
+  };
 }
 
 function saveLocalGroups(groups) {
-  localStorage.setItem("demo-tontines", JSON.stringify(groups));
-  return groups;
+  const normalized = Array.isArray(groups) ? groups.map(normalizeGroup) : [];
+  localStorage.setItem("demo-tontines", JSON.stringify(normalized));
+  return normalized;
 }
 
 function upsertGroupInCollection(group, groupsList = loadLocalGroups()) {
-  const normalizedGroup = {
-    ...group,
-    memberCount: group.memberCount || (group.members || []).length
-  };
+  const normalizedGroup = normalizeGroup(group);
   const existing = groupsList.find((item) => item.id === normalizedGroup.id);
   const nextGroups = existing
     ? groupsList.map((item) => (item.id === normalizedGroup.id ? normalizedGroup : item))
@@ -276,6 +337,7 @@ async function api(path, options = {}) {
       clearTimeout(id);
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || `Request failed (${response.status})`);
+      if (data === null || typeof data !== "object") throw new Error("Invalid response from server");
       return data;
     } catch (err) {
       clearTimeout(id);
@@ -289,10 +351,7 @@ async function api(path, options = {}) {
 function App() {
   const [lang, setLang] = useState(localStorage.getItem("tontine-lang") || "en");
   const [groups, setGroups] = useState(() => loadLocalGroups());
-  const [group, setGroup] = useState(() => {
-    const saved = localStorage.getItem("current-group");
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [group, setGroup] = useState(readSavedGroup);
   const [screen, setScreen] = useState("dashboard");
   const [error, setError] = useState("");
   const [installPrompt, setInstallPrompt] = useState(null);
@@ -349,7 +408,7 @@ function App() {
           role: "member"
         }
       ];
-      saveLocalGroups(demoTontines);
+      setGroups(saveLocalGroups(demoTontines));
     }
   }, []);
 
@@ -370,8 +429,8 @@ function App() {
   useEffect(() => {
     api("/groups")
       .then((serverGroups) => {
-        setGroups(serverGroups);
-        saveLocalGroups(serverGroups);
+        if (!Array.isArray(serverGroups)) throw new Error("Invalid group list from server");
+        setGroups(saveLocalGroups(serverGroups));
       })
       .catch(() => {
         const demo = loadLocalGroups();
@@ -381,7 +440,7 @@ function App() {
     if (token) {
       api("/me")
         .then((data) => {
-          const nextGroup = data.group;
+          const nextGroup = normalizeGroup(data.group);
           setGroup(nextGroup);
           saveGroupLocally(nextGroup);
           saveCurrentGroup(nextGroup);
@@ -389,7 +448,7 @@ function App() {
         .catch(() => {
           const saved = localStorage.getItem("current-group");
           if (saved) {
-            const nextGroup = JSON.parse(saved);
+            const nextGroup = normalizeGroup(JSON.parse(saved));
             setGroup(nextGroup);
           }
           localStorage.removeItem("tontine-token");
@@ -398,13 +457,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js", { updateViaCache: "none" }).catch(() => {});
   }, []);
 
   async function refresh() {
     try {
       const data = await api("/me");
-      const nextGroup = data.group;
+      const nextGroup = normalizeGroup(data.group);
       saveGroupLocally(nextGroup);
       saveCurrentGroup(nextGroup);
       setGroup(nextGroup);
@@ -412,7 +471,7 @@ function App() {
     } catch (err) {
       const saved = localStorage.getItem(`group-${group?.id || ""}`);
       if (saved) {
-        const nextGroup = JSON.parse(saved);
+        const nextGroup = normalizeGroup(JSON.parse(saved));
         setGroup(nextGroup);
         setError("Working offline with saved data.");
       } else {
@@ -567,9 +626,10 @@ function Login({ groups, setGroup, setError, t }) {
         retries: 2
       });
       localStorage.setItem("tontine-token", data.token);
-      saveGroupLocally(data.group);
-      saveCurrentGroup(data.group);
-      setGroup(data.group);
+      const nextGroup = normalizeGroup(data.group);
+      saveGroupLocally(nextGroup);
+      saveCurrentGroup(nextGroup);
+      setGroup(nextGroup);
       setError("");
     } catch (err) {
       const local = loadLocalGroups().find((item) => item.id === selected);
