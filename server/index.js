@@ -674,6 +674,17 @@ app.post("/api/loan-applications/:id/approve", authGroup, requirePermission("loa
   res.status(201).json({ application, loan });
 });
 
+app.post("/api/loan-applications/:id/reject", authGroup, requirePermission("loans.approve"), async (req, res) => {
+  const application = req.group.loanApplications.find((item) => item.id === req.params.id);
+  if (!application) return res.status(404).json({ error: "Application not found" });
+  if (application.status !== "submitted") return res.status(400).json({ error: "Only submitted applications can be rejected" });
+  application.status = "rejected";
+  application.rejectedAt = new Date().toISOString();
+  appendAudit(req.store, req.group.id, "loan_application_rejected", { applicationId: application.id });
+  await saveStore(req.store);
+  res.json({ application });
+});
+
 app.post("/api/loans", authGroup, requirePermission("loans.write"), async (req, res) => {
   const member = req.group.members.find((item) => item.id === req.body.memberId);
   if (!member) return res.status(400).json({ error: "Member not found" });

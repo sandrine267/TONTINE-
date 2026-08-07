@@ -77,6 +77,7 @@ const copy = {
     applyLoan: "Apply for loan",
     purpose: "Purpose",
     approve: "Approve",
+    reject: "Reject",
     repayment: "Repayment",
     vote: "Vote",
     createVote: "Create vote",
@@ -164,6 +165,7 @@ const copy = {
     applyLoan: "Demander pret",
     purpose: "Objet",
     approve: "Approuver",
+    reject: "Rejeter",
     repayment: "Remboursement",
     vote: "Vote",
     createVote: "Creer vote",
@@ -514,7 +516,11 @@ function App() {
   }
 
   async function handleInstall() {
-    if (!installPrompt) return;
+    if (!window.confirm("Do you want to install Tontine on this phone?")) return;
+    if (!installPrompt) {
+      alert("To install: on Android, open the browser menu (⋮) and choose Install app or Add to Home screen. On iPhone, tap Share then Add to Home Screen.");
+      return;
+    }
     installPrompt.prompt();
     const { outcome } = await installPrompt.userChoice;
     if (outcome === "accepted") setInstallPrompt(null);
@@ -556,12 +562,10 @@ function App() {
           <span>{t.app}</span>
         </div>
         <div className="actions">
-          {installPrompt && (
-            <button className="icon-button" onClick={handleInstall} title={t.install} aria-label="Install app">
-              <Download size={18} />
-              {t.install}
-            </button>
-          )}
+          <button className="icon-button" onClick={handleInstall} title={t.install} aria-label="Install app">
+            <Download size={18} />
+            {t.install}
+          </button>
           <button
             className="icon-button"
             onClick={() => setLang(lang === "en" ? "fr" : "en")}
@@ -1050,7 +1054,8 @@ function Loans({ group, setGroup, setGroups, refresh, t }) {
           <span>
             {item.memberName} - {money(item.amount, group.currency)} - {item.eligibility} - {item.status}
             {can(group, "loans.approve") && item.status === "submitted" && (
-              <button className="secondary mini inline-action" onClick={async () => {
+              <>
+                <button className="secondary mini inline-action" onClick={async () => {
                 try {
                   await api(`/loan-applications/${item.id}/approve`, { method: "POST", body: JSON.stringify({}) });
                   refresh();
@@ -1060,7 +1065,17 @@ function Loans({ group, setGroup, setGroups, refresh, t }) {
                   saveOffline({ ...group, loanApplications: applications, loans: [loan, ...group.loans] });
                   setRepayment((current) => ({ ...current, loanId: loan.id }));
                 }
-              }}>{t.approve}</button>
+                }}>{t.approve}</button>
+                <button className="secondary mini inline-action" onClick={async () => {
+                  try {
+                    await api(`/loan-applications/${item.id}/reject`, { method: "POST", body: JSON.stringify({}) });
+                    refresh();
+                  } catch {
+                    const applications = group.loanApplications.map((applicationItem) => applicationItem.id === item.id ? { ...applicationItem, status: "rejected" } : applicationItem);
+                    saveOffline({ ...group, loanApplications: applications });
+                  }
+                }}>{t.reject}</button>
+              </>
             )}
           </span>
         )} />
